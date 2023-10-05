@@ -31,7 +31,7 @@ export const App = () => {
     };
     contacts.some(i => i.name === name)
       ? alert(`${name} is already in contacts`)
-      : setContacts([contact, ...contacts]);
+      : setContacts(prevContacts => [contact, ...prevContacts]);
   };
 
   const changeFilter = e => {
@@ -39,20 +39,20 @@ export const App = () => {
   };
 
   const getVisibleContacts = () => {
-    return contacts.filter(contacts =>
-      contacts.name.toLowerCase().includes(filter.toLowerCase())
+    return contacts.filter(({ name }) =>
+      name.toLowerCase().includes(filter.toLowerCase())
     );
   };
 
   const removeContact = contactId => {
-    setContacts(contacts.filter(id => id !== contactId));
+    setContacts(prev => prev.filter(i => i.id !== contactId));
   };
 
   return (
     <MainDiv>
       <GlobalStyle />
       <h1>Phonebook</h1>
-      <ContactForm onAddContact={addContact} />
+      <ContactForm onSubmitForm={addContact} />
       <h2>Contacts</h2>
       <Filter value={filter} onChangeFilter={changeFilter} />
       <ContactList
